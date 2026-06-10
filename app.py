@@ -12,7 +12,7 @@ import streamlit as st
 
 
 # ---- 中文字体 ----
-for _f in ["PingFang SC", "Heiti SC", "STHeiti", "Arial Unicode MS", "SimHei"]:
+for _f in ["PingFang SC", "Heiti SC", "STHeiti", "Noto Sans CJK SC", "Noto Sans SC", "WenQuanYi Micro Hei", "Arial Unicode MS", "SimHei"]:
     if any(_f.lower() in name.lower() for name in fm.get_font_names()):
         plt.rcParams["font.family"] = _f
         break
