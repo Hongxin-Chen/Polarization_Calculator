@@ -21,7 +21,7 @@ _FONT_FILE = _os.path.join(_FONT_DIR, "NotoSansSC-Regular.otf")
 if not _os.path.exists(_FONT_FILE):
     try:
         _url = ("https://raw.githubusercontent.com/notofonts/noto-cjk/main/"
-                "Sans/OTF/SimplifiedChinese/NotoSansSC-Regular.otf")
+                "Sans/SubsetOTF/SC/NotoSansSC-Regular.otf")
         _request.urlretrieve(_url, _FONT_FILE)
     except Exception:
         pass
@@ -251,21 +251,21 @@ def fig_to_svg_html(fig, max_width_px):
 def state_sub(info):
     """单个偏振态的副标题:形态 · 方位角 · 偏振消光比 · 椭偏角"""
     if info["S0"] < 1e-9:
-        return f"{info['hand']}\n$\\chi$ = —\n偏振消光比 (PER) = —"
+        return f"{info['hand']}\nχ = —\n偏振消光比 (PER) = —"
     chi = info["chi"]
     chi_rad = np.deg2rad(abs(chi))
     # 偏振消光比 = 长/短轴强度比 (a/b)^2,以 dB 表示;圆偏振=0 dB,线偏振=∞
     per = "∞" if chi_rad < 1e-3 else f"{-20 * np.log10(np.tan(chi_rad)):.1f} dB"
     if info["hand"] == "线偏振":
         # 线偏振:椭偏角 χ≈0、PER=∞ 无参考意义,不显示
-        return f"{info['hand']} · $\\psi$ {info['psi']:.2f}°"
+        return f"{info['hand']} · ψ {info['psi']:.2f}°"
     if is_circular(info):
         # 圆偏振:无方位角
         head = f"{info['hand']}圆偏振"
     else:
-        head = f"{info['hand']} · $\\psi$ {info['psi']:.2f}°"
+        head = f"{info['hand']} · ψ {info['psi']:.2f}°"
     axis_ratio = 1.0 / np.tan(chi_rad)  # a/b = 1/tan|χ|
-    return f"{head}\n$\\chi$ = {chi:+.1f}°\n轴比 $a/b$ = {axis_ratio:.2f}\n消光比 (PER) = {per}"
+    return f"{head}\nχ = {chi:+.1f}°\n轴比 a/b = {axis_ratio:.2f}\n消光比 (PER) = {per}"
 
 
 def draw_state_thumb(ax, jv, ref_S0=None):
