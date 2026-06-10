@@ -1,4 +1,4 @@
-# 🔬 偏振模拟器 · Polarization Simulator
+<h1 align="center"> 偏振模拟器 · Polarization Simulator</h1>
 
 > 基于琼斯演算的偏振态级联计算器 — 逐级演化 · 实时可视化  
 > *Jones Calculus Cascade Calculator — Step-by-step evolution with real-time visualization*
