@@ -5,42 +5,39 @@
 import io
 import base64
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 from matplotlib.patches import Circle
 import streamlit as st
 
 
-# ---- 中文字体 (兼容 macOS / Windows / Linux 云部署) ----
-# 1. 先清理 matplotlib 字体缓存,确保云端 apt 安装的字体被发现
-import os as _os, glob as _glob
-_cache_dir = matplotlib.get_cachedir()
-for _fn in _os.listdir(_cache_dir):
-    if _fn.startswith("fontlist"):
-        try:
-            _os.remove(_os.path.join(_cache_dir, _fn))
-        except (OSError, PermissionError):
-            pass
-# 2. Linux 云环境:直接注册 Noto CJK 字体文件(globbing 防路径差异)
-for _p in _glob.glob("/usr/share/fonts/**/NotoSansCJK*", recursive=True):
+# ---- 中文字体: 全平台统一 Noto Sans SC, 本地/云端完全一致 ----
+import os as _os, urllib.request as _request
+
+_FONT_DIR = _os.path.join(_os.path.expanduser("~"), ".fonts")
+_os.makedirs(_FONT_DIR, exist_ok=True)
+_FONT_FILE = _os.path.join(_FONT_DIR, "NotoSansSC-Regular.otf")
+
+if not _os.path.exists(_FONT_FILE):
     try:
-        fm.fontManager.addfont(_p)
+        _url = ("https://raw.githubusercontent.com/notofonts/noto-cjk/main/"
+                "Sans/OTF/SimplifiedChinese/NotoSansSC-Regular.otf")
+        _request.urlretrieve(_url, _FONT_FILE)
     except Exception:
         pass
-for _p in _glob.glob("/usr/share/fonts/**/wqy*", recursive=True):
-    try:
-        fm.fontManager.addfont(_p)
-    except Exception:
-        pass
-# 3. 按优先级搜索可用的中文字体族名
-for _f in ["PingFang SC", "Heiti SC", "STHeiti",
-           "Noto Sans CJK SC", "Noto Sans SC",
-           "WenQuanYi Micro Hei", "WenQuanYi Zen Hei",
-           "Arial Unicode MS", "SimHei"]:
-    if any(_f.lower() in name.lower() for name in fm.get_font_names()):
-        plt.rcParams["font.family"] = _f
-        break
+
+if _os.path.exists(_FONT_FILE):
+    fm.fontManager.addfont(_FONT_FILE)
+    plt.rcParams["font.family"] = "Noto Sans SC"
+else:
+    # 极端离线环境: fallback 到系统字体 (macOS PingFang / Windows SimHei 等)
+    for _f in ["PingFang SC", "Heiti SC", "STHeiti",
+               "Noto Sans CJK SC", "WenQuanYi Micro Hei",
+               "Arial Unicode MS", "SimHei"]:
+        if any(_f.lower() in name.lower() for name in fm.get_font_names()):
+            plt.rcParams["font.family"] = _f
+            break
+
 plt.rcParams["axes.unicode_minus"] = False
 
 
