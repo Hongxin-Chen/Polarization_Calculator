@@ -3,9 +3,7 @@
 > 基于琼斯演算的偏振态级联计算器 — 逐级演化 · 实时可视化  
 > *Jones Calculus Cascade Calculator — Step-by-step evolution with real-time visualization*
 
-<p align="center">
-  <img src="screenshot.png" alt="Polarization Simulator Screenshot" width="100%">
-</p>
+<img width="1894" height="936" alt="image" src="https://github.com/user-attachments/assets/59690989-b271-40bb-a2e1-5abd9fc1f619" />
 
 ---
 
